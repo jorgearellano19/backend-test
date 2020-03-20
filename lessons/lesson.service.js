@@ -1,9 +1,21 @@
 const {Lesson} = require('./lesson.model');
 const {Question} = require('../questions/question.model');
+const {getQuestionsDetail} = require('../questions/question.service')
 const mongoose = require('mongoose');
+
 const getLessons = async () => {
     const lessons = Lesson.find().exec();
     return lessons;
+}
+
+const getLessonDetail = async (id) => {
+    const lesson = await Lesson.findById(id).exec();
+    questionDetails = await getQuestionsDetail(lesson.questions);
+    console.log(questionDetails);
+    return {
+        ...lesson.toJSON(),
+        questionDetails
+    }
 }
 
 const createLesson = async({name, questions}) => {
@@ -59,7 +71,6 @@ const getLessonsDetails = async (lessons) => {
         const found = await Lesson.findById(lesson).exec();
         arrayLessons.push(found);
     }
-    console.log(arrayLessons);
     return arrayLessons; 
 }
 
@@ -68,5 +79,5 @@ module.exports = {
     getLessons,
     updateLesson,
     findLessons,
-    getLessonsDetails
+    getLessonDetail
 };

@@ -34,9 +34,19 @@ const updateQuestion = async ({ questionType, question, answer, score }, questio
         questionToUpdate.updatetAt = insert.updatedAt;
         await questionToUpdate.save();
         return questionToUpdate;
-}
+};
+
+const getQuestionsDetail = async(questions) => {
+    let arrayQuestions = [];
+    for(const question of questions) {
+        const found = await Questions.Question.findById(question).exec();
+        arrayQuestions.push(found);
+    }
+    return arrayQuestions;
+};
 module.exports = {
     getQuestions,
     createQuestion,
-    updateQuestion
+    updateQuestion,
+    getQuestionsDetail
 };

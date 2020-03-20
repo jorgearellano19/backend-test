@@ -5,6 +5,7 @@ const {makeSuccessResponse, makeFailResponse} = require('../helpers/response');
 const authorize = require('../helpers/authorize');
 // routes
 router.get('/', authorize(), getLessons);
+router.get('/:lessonId', authorize(), getLessonDetail);
 router.post('/', authorize(), createLesson);
 router.put('/:lessonId', authorize(), updateLesson);
 
@@ -13,6 +14,15 @@ module.exports = router;
 async function getLessons(req, res, next) {
     try {
         const lessons = await lessonService.getLessons();
+        res.json(makeSuccessResponse(lessons));
+    } catch (err) {
+        res.status(400).json(makeFailResponse(err.message));
+    }
+}
+
+async function getLessonDetail(req, res, next) {
+    try {
+        const lessons = await lessonService.getLessonDetail(req.params.lessonId);
         res.json(makeSuccessResponse(lessons));
     } catch (err) {
         res.status(400).json(makeFailResponse(err.message));
