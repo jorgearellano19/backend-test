@@ -5,6 +5,14 @@ const makeSuccessResponse = (data) => {
     }
 };
 
+const makeFailResponse = (message) => {
+    return {
+        success:false,
+        message
+    }
+}
+
 module.exports = {
-    makeSuccessResponse
+    makeSuccessResponse,
+    makeFailResponse
 };

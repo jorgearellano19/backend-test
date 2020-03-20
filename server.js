@@ -9,7 +9,7 @@ const errorHandler = require('./helpers/error-handler');
 const userController = require('./users/user.controller');
 const questionController = require('./questions/question.controller');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
