@@ -5,7 +5,11 @@ const Role = require('../helpers/roles');
 // users hardcoded.
 const users = [
     { id: 1, username: 'admin', password: 'admin', role: Role.Professor},
-    { id: 2, username: 'user', password: 'user', role: Role.Student, previousCourses: [] }
+    { id: 2, username: 'user', password: 'user', role: Role.Student, previousCourses: [{
+        id: '5e753cd3d4adc40d3008b7e5',
+        lessonsPassed: []
+    }] },
+    { id: 2, username: 'user2', password: 'user2', role: Role.Student, previousCourses: [] }
 ];
 
 module.exports = {
