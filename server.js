@@ -9,6 +9,7 @@ const errorHandler = require('./helpers/error-handler');
 const userController = require('./users/user.controller');
 const questionController = require('./questions/question.controller');
 const lessonController = require('./lessons/lesson.controller');
+const courseController = require('./courses/courses.controller');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,7 +30,7 @@ app.use(jwt());
 app.use('/users', userController);
 app.use('/questions', questionController);
 app.use('/lessons', lessonController);
-
+app.use('/courses', courseController);
 
 app.use(errorHandler);
 

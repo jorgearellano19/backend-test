@@ -4,8 +4,8 @@ const Role = require('../helpers/roles');
 
 // users hardcoded.
 const users = [
-    { id: 1, username: 'admin', password: 'admin', role: Role.Professor },
-    { id: 2, username: 'user', password: 'user', role: Role.Student }
+    { id: 1, username: 'admin', password: 'admin', role: Role.Professor},
+    { id: 2, username: 'user', password: 'user', role: Role.Student, previousCourses: [] }
 ];
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
 async function authenticate({ username, password }) {
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
-        const token = jwt.sign({ sub: user.id }, config.secret);
+        const token = jwt.sign({ sub: user.id, role: user.role, previousCourses: []}, config.secret);
         const { password, ...userWithoutPassword } = user;
         return {
             ...userWithoutPassword,
