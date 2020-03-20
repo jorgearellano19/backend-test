@@ -43,8 +43,19 @@ const findQuestions = async (questions) => {
     return true;
 };
 
+const findLessons = async (lessons) => {
+    for(const lesson of lessons) {
+        const found = await Lesson.findById(lesson).exec();
+        if(!found) {
+            return false;
+        } 
+    }
+    return true; 
+};
+
 module.exports = {
     createLesson, 
     getLessons,
-    updateLesson
+    updateLesson,
+    findLessons
 };
