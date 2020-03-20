@@ -8,6 +8,7 @@ const jwt = require('./helpers/jwt');
 const errorHandler = require('./helpers/error-handler');
 const userController = require('./users/user.controller');
 const questionController = require('./questions/question.controller');
+const lessonController = require('./lessons/lesson.controller');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -27,6 +28,8 @@ app.use(jwt());
 // api routes
 app.use('/users', userController);
 app.use('/questions', questionController);
+app.use('/lessons', lessonController);
+
 
 app.use(errorHandler);
 

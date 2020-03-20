@@ -33,7 +33,6 @@ const updateQuestion = async ({ questionType, question, answer, score }, questio
         questionToUpdate.score = insert.score;
         questionToUpdate.updatetAt = insert.updatedAt;
         await questionToUpdate.save();
-        console.log(questionToUpdate);
         return questionToUpdate;
 }
 module.exports = {
