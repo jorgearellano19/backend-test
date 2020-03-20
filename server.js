@@ -2,18 +2,31 @@ require('rootpath')();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('./helpers/jwt');
 const errorHandler = require('./helpers/error-handler');
+const userController = require('./users/user.controller');
+const questionController = require('./questions/question.controller');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+mongoose.connect('mongodb://localhost:27017/dacodes_courses', {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+})
+    .then(() => console.log('DB Connected!'))
+    .catch(err => {
+        console.log(`DB Connection Error: ${err.message}`);
+    });
+
 app.use(jwt());
 
 // api routes
-app.use('/users', require('./users/user.controller'));
+app.use('/users', userController);
+app.use('/questions', questionController);
 
 app.use(errorHandler);
 
