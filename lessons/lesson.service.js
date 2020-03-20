@@ -53,9 +53,20 @@ const findLessons = async (lessons) => {
     return true; 
 };
 
+const getLessonsDetails = async (lessons) => {
+    let arrayLessons = [];
+    for(const lesson of lessons) {
+        const found = await Lesson.findById(lesson).exec();
+        arrayLessons.push(found);
+    }
+    console.log(arrayLessons);
+    return arrayLessons; 
+}
+
 module.exports = {
     createLesson, 
     getLessons,
     updateLesson,
-    findLessons
+    findLessons,
+    getLessonsDetails
 };

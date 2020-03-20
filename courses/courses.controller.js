@@ -8,6 +8,7 @@ const Role = require('../helpers/roles');
 
 router.get('/', authorize(Role.Professor), getCourses);
 router.get('/students', authorize(Role.Student), getCoursesByStudent);
+router.get('/:courseId', authorize(), getCourseById);
 router.post('/', authorize(Role.Professor), createCourse);
 router.put('/:courseId', authorize(Role.Professor), updateCourse);
 
@@ -22,12 +23,20 @@ async function getCourses(req, res, next) {
     }
 }
 
+async function getCourseById(req, res, next) {
+    try {
+        const courses = await courseService.getCourseById(req.params.courseId);
+        res.json(makeSuccessResponse(courses));
+    } catch (err) {
+        res.status(400).json(makeFailResponse(err.message));
+    }
+}
+
 async function createCourse(req, res, next) {
     try {
         const course = await courseService.createCourse(req.body);
         res.json(makeSuccessResponse(course));
     } catch (err) {
-        console.log('ERROR', err);
         res.status(400).json(makeFailResponse(err.message));
     }
 } 

@@ -1,6 +1,6 @@
 const {Course} = require('./course.model');
 const mongoose = require('mongoose');
-const {findLessons} = require('../lessons/lesson.service');
+const {findLessons, getLessonsDetails} = require('../lessons/lesson.service');
 const {GeneralException} = require('../helpers/general-exception');
 
 
@@ -9,9 +9,19 @@ const getCourses = async () => {
     return courses;
 }
 
+const getCourseById = async (id) => {
+    const course = await Course.findOne({_id: id});
+
+    lessonDetails = await getLessonsDetails(course.lessons);
+    console.log(course.lessonDetails);
+    return {
+        ...course.toJSON(),
+        lessonDetails 
+    };
+}
+
 const getCoursesByStudent = async (user) => {
     const courses = await Course.find().exec();
-    console.log(courses);
     return courses.map(course => ({
         ...course.toJSON(),
         canTakeCourse: course.previous ? findCourseInPrevious(course, user.previousCourses) : true
@@ -66,6 +76,7 @@ module.exports = {
     getCourses, 
     createCourse,
     updateCourse,
-    getCoursesByStudent
+    getCoursesByStudent,
+    getCourseById
 };
 
