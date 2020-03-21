@@ -3,10 +3,12 @@ const router = express.Router();
 const questionService = require('./question.service');
 const {makeSuccessResponse, makeFailResponse} = require('../helpers/response');
 const authorize = require('../helpers/authorize');
+const Role = require('../helpers/roles');
+
 // routes
 router.get('/', authorize(), getQuestions);
-router.post('/', authorize(), createQuestion);
-router.put('/:questionId', authorize(), updateQuestion);
+router.post('/', authorize(Role.Professor), createQuestion);
+router.put('/:questionId', authorize(Role.Professor), updateQuestion);
 
 module.exports = router;
 

@@ -3,12 +3,14 @@ const router = express.Router();
 const lessonService = require('./lesson.service');
 const {makeSuccessResponse, makeFailResponse} = require('../helpers/response');
 const authorize = require('../helpers/authorize');
+const Role = require('../helpers/roles');
+
 // routes
 router.get('/', authorize(), getLessons);
 router.get('/:lessonId', authorize(), getLessonDetail);
-router.post('/', authorize(), createLesson);
+router.post('/', authorize(Role.Professor), createLesson);
 router.put('/answer/:lessonId', authorize(), answerLesson);
-router.put('/:lessonId', authorize(), updateLesson);
+router.put('/:lessonId', authorize(Role.Professor), updateLesson);
 
 module.exports = router;
 
