@@ -7,6 +7,7 @@ const authorize = require('../helpers/authorize');
 router.get('/', authorize(), getLessons);
 router.get('/:lessonId', authorize(), getLessonDetail);
 router.post('/', authorize(), createLesson);
+router.put('/answer/:lessonId', authorize(), answerLesson);
 router.put('/:lessonId', authorize(), updateLesson);
 
 module.exports = router;
@@ -44,5 +45,14 @@ async function updateLesson(req, res, next) {
         res.json(makeSuccessResponse(lesson));
     } catch (err) {
         res.status(400).json(makeFailResponse(err.message));
+    }
+}
+
+async function answerLesson(req, res, next){
+    try {
+        const lesson = await lessonService.answerLesson(req.body, req.params.lessonId);
+        res.json(makeSuccessResponse(lesson));
+    } catch(err) {
+        res.status(400).json(makeFailResponse(err.message));   
     }
 } 

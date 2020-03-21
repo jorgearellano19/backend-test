@@ -56,7 +56,6 @@ var multipleAnswerSchema = new Schema({
     }
 });
 
-
 const Question = mongoose.model('question', questionSchema);
 const SingleChoice = mongoose.model('singleChoiceAnswer', oneChoiceSchema);
 const MultipleChoice = mongoose.model('multipleChoiceAnswer', multipleAnswerSchema);

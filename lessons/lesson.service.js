@@ -1,6 +1,7 @@
 const {Lesson} = require('./lesson.model');
 const {Question} = require('../questions/question.model');
 const {getQuestionsDetail} = require('../questions/question.service')
+const { GeneralException } = require('../helpers/general-exception')
 const mongoose = require('mongoose');
 
 const getLessons = async () => {
@@ -11,7 +12,6 @@ const getLessons = async () => {
 const getLessonDetail = async (id) => {
     const lesson = await Lesson.findById(id).exec();
     questionDetails = await getQuestionsDetail(lesson.questions);
-    console.log(questionDetails);
     return {
         ...lesson.toJSON(),
         questionDetails
@@ -72,6 +72,56 @@ const getLessonsDetails = async (lessons) => {
         arrayLessons.push(found);
     }
     return arrayLessons; 
+};
+
+const answerLesson = async ({answers}, lessonId) => {
+    const details = await getLessonDetail(lessonId);
+    let scoreUser = 0;
+    details.questionDetails.forEach(question => {
+       const index = answers.findIndex(ans => ans._id == question._id);
+       if(index < 0) {
+            exception = new GeneralException('Questions are missing');
+            throw exception;
+        }
+        switch(question.questionType) {
+            case "Boolean":
+                if(question.answer === answers[index].answer)
+                    scoreUser+=question.score;
+                break;
+            case "All_Choice":
+                if(!Array.isArray(answers[index].answer)){
+                    exception = new GeneralException('Bad typing in all choice answer');
+                    throw exception;
+                }
+                if(question.answer.answer.sort().join(',')=== answers[index].answer.sort().join(','))
+                    scoreUser+=question.score;
+                break;
+            case "One_Choice":
+                if(question.answer.answer === answers[index].answer)
+                    scoreUser+=question.score; 
+                break;
+            case "Mul_Choice":
+                if(question.answer.answer.some(a => answers[index].answer.indexOf(a) >= 0))
+                    scoreUser+=question.score; 
+                break;
+        }
+    });
+
+    const lessonScore = details.questionDetails.reduce((total, current) => {
+        return {score: total.score + current.score}
+    });
+    if(scoreUser <= lessonScore.score) {
+        return {
+            success: false,
+            scoreUser,
+            lessonScore: lessonScore.score
+        }
+    }
+    else return {
+        success: true,
+        scoreUser,
+        lessonScore: lessonScore.score
+    }  
 }
 
 module.exports = {
@@ -79,5 +129,6 @@ module.exports = {
     getLessons,
     updateLesson,
     findLessons,
-    getLessonDetail
+    getLessonDetail,
+    answerLesson
 };
