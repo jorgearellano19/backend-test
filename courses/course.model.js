@@ -15,6 +15,10 @@ var courseSchema = new Schema({
         type: [ObjectId],
         required: true,
         validate: [minArray, '{PATH} has to have at least one lesson']
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 });
 

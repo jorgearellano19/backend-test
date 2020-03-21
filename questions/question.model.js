@@ -22,8 +22,11 @@ var questionSchema = new Schema({
         type: Number,
         required: true
     },
-
-    createdat: {
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    createdAt: {
         type: Date
     },
     updatedAt: {

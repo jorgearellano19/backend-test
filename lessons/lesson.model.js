@@ -10,6 +10,10 @@ var lessonSchema = new Schema({
     questions: {
         type: [ObjectId],
         required: true
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 });
 

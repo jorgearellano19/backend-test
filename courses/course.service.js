@@ -43,13 +43,14 @@ const updateCourse = async (course, courseId ) => {
     const courseToUpdate = await Course.findOne({_id: courseId}).exec();
     courseToUpdate.name = course.name;
     courseToUpdate.lessons = course.lessons;
+    courseToUpdate.isActive = course.isActive;
     await courseToUpdate.save();
     return courseToUpdate;
 };
 
 const findCourses = async (courses) => {
     for(const course of courses) {
-        const found = await Course.findById(course).exec();
+        const found = await Course.find({_id: course, isActive: true}).exec();
         if(!found) {
             return false;
         } 

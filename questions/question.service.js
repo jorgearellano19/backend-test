@@ -39,7 +39,7 @@ const updateQuestion = async ({ questionType, question, answer, score }, questio
 const getQuestionsDetail = async(questions) => {
     let arrayQuestions = [];
     for(const question of questions) {
-        const found = await Questions.Question.findById(question).exec();
+        const found = await Questions.Question.find({_id:question, isActive: true}).exec();
         arrayQuestions.push(found);
     }
     return arrayQuestions;

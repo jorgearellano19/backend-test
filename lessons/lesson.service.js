@@ -25,35 +25,27 @@ const createLesson = async({name, questions}) => {
         questions
     };
     questions = questions.map(question => mongoose.Types.ObjectId(question));
-    if(!await findQuestions(questions))
+    if(!await getQuestionsDetail(questions))
         throw new Error("One or more questions does not exist in the database. Please try again");
 
     const created = await Lesson.create(lesson);
     return created;
 };
 
-const updateLesson = async({name, questions}, lessonId) => {
+const updateLesson = async({name, questions, isActive}, lessonId) => {
     let lesson = {
         name,
-        questions
+        questions,
+        isActive
     };
 
     const lessonToUpdate = await Lesson.findOne({_id: lessonId});
     lessonToUpdate.name = lesson.name;
     lessonToUpdate.questions = lesson.questions;
+    lessonToUpdate.isActive = lesson.isActive;
     await lessonToUpdate.save();
     return lessonToUpdate;
 }
-
-const findQuestions = async (questions) => {
-    for(const question of questions) {
-        const found = await Question.findById(question).exec();
-        if(!found) {
-            return false;
-        }
-    }
-    return true;
-};
 
 const findLessons = async (lessons) => {
     for(const lesson of lessons) {
@@ -68,7 +60,7 @@ const findLessons = async (lessons) => {
 const getLessonsDetails = async (lessons) => {
     let arrayLessons = [];
     for(const lesson of lessons) {
-        const found = await Lesson.findById(lesson).exec();
+        const found = await Lesson.find({_id:lesson, isActive: true}).exec();
         arrayLessons.push(found);
     }
     return arrayLessons; 
