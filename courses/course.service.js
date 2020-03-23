@@ -29,7 +29,7 @@ const getCoursesByStudent = async (user) => {
 };
 
 function findCourseInPrevious(course, previousCourses) {
-    return course.previous.every(c => previousCourses.findIndex(previous => previous === c) >= 0);
+    return course.previous.every(c => previousCourses.findIndex(previous => previous.id === c) >= 0);
 }
 
 const createCourse = async (course) => {
