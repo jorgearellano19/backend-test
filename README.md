@@ -178,7 +178,7 @@ Response:
 
 
 ## Run the project.
-For start the service the only thing you need to do is type `node server.js` in the terminal.
+For start the service the only thing you need to do is type first `npm install ` and then `node server.js` in the terminal. Make sure you have mongodb in your computer.
 
 ### Authorization.
 
